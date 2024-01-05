@@ -1,0 +1,45 @@
+version: '3.8'
+services: 
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${IMAGES_PREFIX:-}librecart-php
+    volumes:
+      - ./:/var/www
+  web:
+    image: nginx:alpine
+    container_name: ${IMAGES_PREFIX:-}librecart-web
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./config/docker/nginx/:/etc/nginx/conf.d/
+  db:
+    container_name: ${IMAGES_PREFIX:-}librecart-db
+    image: mysql:8.2
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-pleaseChangeRootPassword!}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
+      MYSQL_USER: ${MYSQL_USER:-app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-!ChangeMe!}
+    entrypoint: 
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE:-app}_test; GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE:-app}_test.* TO \'${MYSQL_USER:-app}\'@\'%\';' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      "
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+  cache:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-!ChangeMe!}
+volumes:
+  dbdata:
+    driver: local
