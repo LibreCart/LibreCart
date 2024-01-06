@@ -21,7 +21,6 @@ class ProductCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            HiddenField::new('id'),
             TextField::new('name'),
             MoneyField::new('price')->setCurrency('EUR'),
             IntegerField::new('ean'),
