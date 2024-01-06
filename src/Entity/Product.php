@@ -19,8 +19,8 @@ class Product
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\Column]
-    private ?int $ean = null;
+    #[ORM\Column(length: 13)]
+    private ?string $ean = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $stock = null;
@@ -54,12 +54,12 @@ class Product
         return $this;
     }
 
-    public function getEan(): ?int
+    public function getEan(): ?string
     {
         return $this->ean;
     }
 
-    public function setEan(int $ean): static
+    public function setEan(string $ean): static
     {
         $this->ean = $ean;
 
