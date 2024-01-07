@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -15,8 +17,8 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTranslation::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $productTranslations;
 
     #[ORM\Column]
     private ?int $price = null;
@@ -27,19 +29,51 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $stock = null;
 
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updated_at = null;
+
+    public function __construct()
+    {
+        $this->productTranslations = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable('now');
+        $this->updated_at = new \DateTimeImmutable('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection<int, ProductTranslation>
+     */
+    public function getProductTranslations(): Collection
     {
-        return $this->name;
+        return $this->productTranslations;
     }
 
-    public function setName(string $name): static
+    public function addProductTranslation(ProductTranslation $productTranslation): static
     {
-        $this->name = $name;
+        if (!$this->productTranslations->contains($productTranslation)) {
+            $this->productTranslations->add($productTranslation);
+            $productTranslation->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductTranslation(ProductTranslation $productTranslation): static
+    {
+        if ($this->productTranslations->removeElement($productTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($productTranslation->getProduct() === $this) {
+                $productTranslation->setProduct(null);
+            }
+        }
 
         return $this;
     }
@@ -78,5 +112,36 @@ class Product
         $this->stock = $stock;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updatedTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable('now'));
     }
 }
