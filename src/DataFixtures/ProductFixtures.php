@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
 use App\Entity\Product;
 use App\Entity\ProductTranslation;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class AppFixtures extends Fixture
+class ProductFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -30,7 +30,6 @@ class AppFixtures extends Fixture
             $manager->persist($product);
             $manager->persist($translation);
         }
-
 
         $manager->flush();
     }
