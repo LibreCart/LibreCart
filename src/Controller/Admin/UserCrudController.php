@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\HttpKernel\Log\Logger;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
@@ -32,24 +33,5 @@ class UserCrudController extends AbstractCrudController
         yield TextField::new('username');
         yield EmailField::new('email')->onlyOnForms();
         yield TextField::new('plainPassword')->setFormType(PasswordType::class)->onlyOnForms();
-    }
-
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        $this->encodePassword($entityInstance);
-        parent::persistEntity($entityManager, $entityInstance);
-    }
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        $this->encodePassword($entityInstance);
-        parent::persistEntity($entityManager, $entityInstance);
-    }
-
-    private function encodePassword(User $user): void
-    {
-        if ($user->getPlainPassword() !== null) {
-            $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
-        }
     }
 }
