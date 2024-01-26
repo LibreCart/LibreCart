@@ -34,4 +34,12 @@ class UserCrudController extends AbstractCrudController
         yield EmailField::new('email')->onlyOnForms();
         yield TextField::new('plainPassword')->setFormType(PasswordType::class)->onlyOnForms();
     }
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if($entityInstance->getPlainPassword()){
+            $entityInstance->setPassword('');
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
 }

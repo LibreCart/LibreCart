@@ -21,6 +21,16 @@ class UserListener
 
     public function prePersist(User $user): void
     {
+        $this->handlePassword($user);
+    }
+
+    public function preUpdate(User $user): void
+    {
+        $this->handlePassword($user);
+    }
+
+    private function handlePassword(User $user)
+    {
         if ($user->getPlainPassword() !== null) {
             $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
         }
