@@ -2,91 +2,29 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ProductTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\UuidTrait;
+use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\TimestampAbleTrait;
+use App\Entity\Traits\TranslateAbleTrait;
+use App\Repository\ProductTranslationRepository;
 
 #[ORM\Entity(repositoryClass: ProductTranslationRepository::class)]
+#[ORM\UniqueConstraint(columns:['product_id', 'locale'])]
 #[ApiResource()]
 class ProductTranslation
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use UuidTrait;
+    use TranslateAbleTrait;
+    use TimestampAbleTrait;
 
     #[ORM\ManyToOne(inversedBy: 'productTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $locale = null;
-
-    #[ORM\Column(options: ['default' => 0])]
-    private int $enabled;
-
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
-
     public function __toString()
     {
         return $this->locale;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): static
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getEnabled(): ?int
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(int $enabled): static
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     public function getProduct(): ?Product

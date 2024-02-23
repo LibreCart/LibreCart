@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Controller\Admin\UserCrudController;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudControllerTest extends KernelTestCase
@@ -33,7 +34,7 @@ class UserCrudControllerTest extends KernelTestCase
 
         $user->setPlainPassword('newPassword');
 
-        $userCrudController = new UserCrudController($this->createMock(UserPasswordHasherInterface::class));
+        $userCrudController = new UserCrudController();
         $userCrudController->updateEntity($entityManager, $user);
 
         $newPassword = $user->getPassword();

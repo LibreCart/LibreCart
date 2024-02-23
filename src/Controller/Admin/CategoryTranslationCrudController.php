@@ -2,20 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\ProductTranslation;
+use App\Entity\CategoryTranslation;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ProductTranslationCrudController extends AbstractCrudController
+class CategoryTranslationCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return ProductTranslation::class;
+        return CategoryTranslation::class;
     }
 
-
+    /*
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -24,4 +24,5 @@ class ProductTranslationCrudController extends AbstractCrudController
             TextEditorField::new('description'),
         ];
     }
+    */
 }
