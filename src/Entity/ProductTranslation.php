@@ -22,11 +22,6 @@ class ProductTranslation
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
-    public function __toString()
-    {
-        return $this->locale;
-    }
-
     public function getProduct(): ?Product
     {
         return $this->product;

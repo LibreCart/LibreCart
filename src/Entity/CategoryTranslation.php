@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\UuidTrait;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\TimestampAbleTrait;
 use App\Entity\Traits\TranslateAbleTrait;
-use App\Entity\Traits\UuidTrait;
 use App\Repository\CategoryTranslationRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryTranslationRepository::class)]
+#[ORM\UniqueConstraint(columns:['category_id', 'locale'])]
+#[ApiResource()]
 class CategoryTranslation
 {
     use UuidTrait;
@@ -18,11 +21,6 @@ class CategoryTranslation
     #[ORM\ManyToOne(inversedBy: 'categoryTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getCategory(): ?Category
     {

@@ -5,23 +5,27 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\UuidTrait;
 use App\Entity\Traits\UrlKeyTrait;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategoryRepository;
 use App\Entity\Traits\TimestampAbleTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ApiResource()]
 class Category
 {
     use UuidTrait;
     use UrlKeyTrait;
     use TimestampAbleTrait;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryTranslation::class, orphanRemoval: true, cascade: ['persist'])]
     private ?Collection $categoryTranslations = null;
 
     #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $parentCategory = null;
+
+    private ?string $parentCategoryId = null;
 
     public function getCategoryTranslations(): ?Collection
     {
@@ -59,10 +63,20 @@ class Category
         return $this->parentCategory;
     }
 
-    public function setParentCategory(?self $parentCategory): static
+    public function setParentCategory(?self $parentCategory)
     {
-        $this->parentCategory = $parentCategory;
+        if($this->parentCategory === $this){
+            return;
+        }
 
-        return $this;
+        $this->parentCategory = $parentCategory;
+    }
+
+    public function getParentCategoryId(): ?string{
+        return $this->parentCategoryId;
+    }
+
+    public function setParentCategoryId(?string $parentCategoryId): void{
+        $this->parentCategoryId = $parentCategoryId;
     }
 }

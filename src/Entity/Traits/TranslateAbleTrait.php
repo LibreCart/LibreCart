@@ -46,4 +46,9 @@ trait TranslateAbleTrait
     {
         $this->description = $description;
     }
+    
+    public function __toString()
+    {
+        return $this->locale;
+    }
 }
