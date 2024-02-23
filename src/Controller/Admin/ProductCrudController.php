@@ -26,6 +26,7 @@ class ProductCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id', 'ID')->setFormTypeOption('disabled', 'disabled'),
+            TextField::new('urlKey'),
             MoneyField::new('price')->setCurrency('EUR'),
             IntegerField::new('ean'),
             IntegerField::new('stock'),

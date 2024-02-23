@@ -22,6 +22,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id', 'ID')->setFormTypeOption('disabled', 'disabled'),
+            TextField::new('urlKey'),
             CollectionField::new('categoryTranslations')->setEntryType(CategoryTranslationType::class)->onlyOnForms()->setFormTypeOption('by_reference', false)
         ];
     }
