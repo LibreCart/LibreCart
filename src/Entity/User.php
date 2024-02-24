@@ -27,11 +27,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getUsername(): ?string
     {
         return $this->username;
