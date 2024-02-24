@@ -15,4 +15,8 @@ trait UrlKeyTrait
     public function setUrlKey(string $urlKey): void {
         $this->urlKey = $urlKey;
     }
+
+    public function __toString(): string {
+        return $this->urlKey;
+    }
 }

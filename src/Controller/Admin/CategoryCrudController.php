@@ -8,6 +8,7 @@ use App\Form\TranslationType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -33,33 +34,9 @@ class CategoryCrudController extends AbstractCrudController
         return [
             IdField::new('id', 'ID')->setFormTypeOption('disabled', 'disabled'),
             TextField::new('urlKey'),
-            ChoiceField::new('parentCategoryId')->setChoices($this->getCategoryChoices()),
+            //ChoiceField::new('parentCategoryId')->setChoices($this->getCategoryChoices()),
+            AssociationField::new('parentCategory')->autocomplete(),
             CollectionField::new('categoryTranslations')->setEntryType(CategoryTranslationType::class)->onlyOnForms()->setFormTypeOption('by_reference', false)
         ];
-    }
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        if($entityInstance->getParentCategoryId()){
-           $category = $this->categoryRepository->find($entityInstance->getParentCategoryId());
-           
-           $entityInstance->setParentCategory($category);
-        }else {
-            $entityInstance->setParentCategory(null);
-        }
-
-        parent::updateEntity($entityManager, $entityInstance);
-    }
-
-    private function getCategoryChoices(): array
-    {
-        $categories = $this->categoryRepository->findAll();
-
-        $choices = [];
-        foreach ($categories as $category) {
-            $choices[$category->getUrlKey()] = (string) $category->getId();
-        }
-
-        return $choices;
     }
 }

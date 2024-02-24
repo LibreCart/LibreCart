@@ -22,7 +22,7 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryTranslation::class, orphanRemoval: true, cascade: ['persist'])]
     private ?Collection $categoryTranslations = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $parentCategory = null;
 
     private ?string $parentCategoryId = null;
