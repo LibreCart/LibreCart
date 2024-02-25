@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\TimestampAbleTrait;
 use App\Entity\Traits\UuidTrait;
+use App\Enum\UserRoleEnum;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -26,6 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function getUsername(): ?string
     {
@@ -73,7 +77,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): void 
+    {
+        foreach( $roles as $role ) {
+            if (!in_array($role, UserRoleEnum::toArray())){
+                return;
+            }
+        }
+
+        $this->roles = $roles;
+    }
+
+    public function addRole(UserRoleEnum $userRole): void 
+    {
+        if (!in_array($userRole->name, $this->roles)){
+            $this->roles = $userRole->name;
+        }
+    }
+
+    public function removeRole(UserRoleEnum $userRole): void 
+    {
+        $key = array_search($userRole->name, $this->roles);
+
+        if ($key) {
+            unset($this->roles[$key]);
+        }
     }
 
     public function eraseCredentials(): void
