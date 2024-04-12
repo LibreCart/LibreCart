@@ -94,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addRole(UserRoleEnum $userRole): void 
     {
         if (!in_array($userRole->name, $this->roles)){
-            $this->roles = $userRole->name;
+            $this->roles[] = $userRole->name;
         }
     }
 

@@ -16,13 +16,23 @@ security:
             lazy: true
             provider: app_user_provider
             form_login:
-                login_path: app_login
-                success_handler: App\Security\AppLoginHandler
-                check_path: app_login
+                login_path: app_admin_login
+                success_handler: App\Security\Admin\AppLoginHandler
+                check_path: app_admin_login
                 enable_csrf: true
-            pattern: ^(?!\/admin\/login$).*
+            pattern: ^/admin
             logout:
-                path: app_logout
+                path: app_admin_logout
+            entry_point: 'form_login'
+            custom_authenticator: App\Security\Admin\LoginFormAuthenticator
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
+                # where to redirect after logout
+                # target: app_any_route
                 # where to redirect after logout
                 # target: app_any_route
             # activate different ways to authenticate
@@ -34,6 +44,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS}
+        - { path: ^/admin/setup, roles: PUBLIC_ACCESS}
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }

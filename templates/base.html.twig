@@ -1,12 +1,17 @@
 <html>
     <head>
-        <title>{% block title %} LibreCart {% endblock %}</title>
+        <title>{{ title }}</title>
         <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
         <link rel="stylesheet" href="{{ asset('src/external/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}" />
     </head>
     <body>
-        {% block body %}
-        {% endblock %}
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-6">
+                <h1 class="mt-5 mb-5">{{ title }}</h1>
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
     </body>
 </html>

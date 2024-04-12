@@ -7,6 +7,8 @@ services:
     container_name: ${IMAGES_PREFIX:-}librecart-php
     volumes:
       - ./:/var/www
+      - var_volume:/var/www/var
+      - vendor_volume:/var/www/vendor
   web:
     image: nginx:alpine
     container_name: ${IMAGES_PREFIX:-}librecart-web
@@ -38,4 +40,8 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-!ChangeMe!}
 volumes:
   dbdata:
+    driver: local
+  var_volume:
+    driver: local
+  vendor_volume:
     driver: local
