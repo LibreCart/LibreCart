@@ -1,18 +1,11 @@
 <?php
+namespace App\Tests\Controller\Admin;
 
 use App\Entity\Product;
+use App\Tests\BaseKernelTest;
 use App\Controller\Admin\ProductCrudController;
-use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ProductCrudControllerTest extends KernelTestCase {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->bootKernel();
-    }
-
+class ProductCrudControllerTest extends BaseKernelTest {
 
     public function testCreateProduct(): void {
         $productCrudController = new ProductCrudController();
@@ -25,6 +18,7 @@ class ProductCrudControllerTest extends KernelTestCase {
     public function testUpdateProduct(): void {
         $product = new Product();
         $product->setEan('1234');
+        $product->setUrlKey('url-key');
         $product->setPrice(1234);
 
         $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');

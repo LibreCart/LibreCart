@@ -17,13 +17,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CategoryCrudController extends AbstractCrudController
 {
-    private CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
-
     public static function getEntityFqcn(): string
     {
         return Category::class;
@@ -35,8 +28,16 @@ class CategoryCrudController extends AbstractCrudController
             IdField::new('id', 'ID')->setFormTypeOption('disabled', 'disabled'),
             TextField::new('urlKey'),
             //ChoiceField::new('parentCategoryId')->setChoices($this->getCategoryChoices()),
-            AssociationField::new('parentCategory')->autocomplete(),
-            CollectionField::new('categoryTranslations')->setEntryType(CategoryTranslationType::class)->onlyOnForms()->setFormTypeOption('by_reference', false)
+            AssociationField::new('parentCategory')
+                ->autocomplete(),
+            AssociationField::new('products')
+                ->autocomplete()
+                ->onlyOnForms()
+                ->setFormTypeOption('by_reference', true),
+            CollectionField::new('categoryTranslations')
+                ->setEntryType(CategoryTranslationType::class)
+                ->onlyOnForms()
+                ->setFormTypeOption('by_reference', false),
         ];
     }
 }

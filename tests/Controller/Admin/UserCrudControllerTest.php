@@ -1,23 +1,12 @@
 <?php
-
-namespace App\Tests\integration\Controller\Admin;
+namespace App\Tests\Controller\Admin;
 
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\BaseKernelTest;
 use App\Controller\Admin\UserCrudController;
-use App\Repository\UserRepository;
-use DateTime;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserCrudControllerTest extends KernelTestCase
+class UserCrudControllerTest extends BaseKernelTest
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->bootKernel();
-    }
-
     public function testUpdateEntityHasEncryptedPassword(): void
     {
         $user = new User();

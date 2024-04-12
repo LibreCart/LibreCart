@@ -19,9 +19,6 @@ class Product
     use UrlKeyTrait;
     use TimestampAbleTrait;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTranslation::class, orphanRemoval: true, cascade: ['persist'])]
-    private ?Collection $productTranslations = null;
-
     #[ORM\Column]
     private ?int $price = null;
 
@@ -31,17 +28,25 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $stock = null;
 
-    public function getProductTranslations(): ?Collection
+    #[ORM\ManyToMany(Category::class, inversedBy: 'products')]
+    private Collection $categories;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTranslation::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $productTranslations;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->productTranslations = new ArrayCollection();
+    }
+
+    public function getProductTranslations(): Collection
     {
         return $this->productTranslations;
     }
 
     public function addProductTranslation(ProductTranslation $productTranslation): static
     {
-        if (!$this->productTranslations) {
-            $this->productTranslations = new ArrayCollection();
-        }
-        
         if (!$this->productTranslations->contains($productTranslation)) {
             $this->productTranslations->add($productTranslation);
             $productTranslation->setProduct($this);
@@ -53,7 +58,6 @@ class Product
     public function removeProductTranslation(ProductTranslation $productTranslation): static
     {
         if ($this->productTranslations->removeElement($productTranslation)) {
-            // set the owning side to null (unless already changed)
             if ($productTranslation->getProduct() === $this) {
                 $productTranslation->setProduct(null);
             }
@@ -95,6 +99,29 @@ class Product
     {
         $this->stock = $stock;
 
+        return $this;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static 
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
+        
         return $this;
     }
 }

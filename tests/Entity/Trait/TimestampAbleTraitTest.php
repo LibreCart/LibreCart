@@ -1,5 +1,5 @@
 <?php 
-namespace App\Tests\Unit\Trait;
+namespace App\Tests\Entity\Trait;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Traits\TimestampAbleTrait;

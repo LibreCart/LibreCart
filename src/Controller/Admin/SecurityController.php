@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route(path: '/admin')]
@@ -26,7 +28,8 @@ class SecurityController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    private function adminExists(): bool {
+    private function adminExists(): bool 
+    {
         return $this->userRepository->findOneByRole(UserRoleEnum::ROLE_ADMIN) ? true : false;
     }
 
@@ -50,13 +53,16 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_admin_logout')]
-    public function logout(): void
+    public function logout(Security $security): Response
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $security->logout();
+
+        return new RedirectResponse('app_admin_login');
     }
 
     #[Route(path: '/setup', name: 'app_admin_setup')]
-    public function register(Request $request): Response {
+    public function register(Request $request): Response 
+    {
         if ($this->adminExists()) {
             return $this->redirectToRoute('app_admin_login');
         }

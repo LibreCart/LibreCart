@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\ProductTranslationType;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -28,7 +29,14 @@ class ProductCrudController extends AbstractCrudController
             MoneyField::new('price')->setCurrency('EUR'),
             IntegerField::new('ean'),
             IntegerField::new('stock'),
-            CollectionField::new('productTranslations')->setEntryType(ProductTranslationType::class)->onlyOnForms()->setFormTypeOption('by_reference', false)
+            AssociationField::new('categories')
+                ->setFormTypeOption('by_reference', false)
+                ->onlyOnForms()
+                ->setCrudController(CategoryCrudController::class),
+            CollectionField::new('productTranslations')
+                ->setEntryType(ProductTranslationType::class)
+                ->onlyOnForms()
+                ->setFormTypeOption('by_reference', false)
         ];
     }
 }
