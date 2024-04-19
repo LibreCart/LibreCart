@@ -3,19 +3,15 @@
 namespace App\Entity\Traits;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM as ORM;
 
 trait TimestampAbleTrait 
 {
     #[ORM\Column(nullable: false)]
-    private ?DateTime $createdAt = null;
+    private ?DateTime $createdAt;
 
     #[ORM\Column(nullable: true)]
     private ?DateTime $updatedAt = null;
-
-    public function __construct() {
-        $this->createdAt = new DateTime();
-    }
 
     public function getCreatedAt(): ?DateTime {
         return $this->createdAt;

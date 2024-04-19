@@ -16,6 +16,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 COPY . /var/www
 RUN chown -R www-data:www-data /var/www/var
+RUN chown -R www-data:www-data /var/www/public
+
+# Run composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install
 
 EXPOSE 9000
 CMD ["php-fpm"]
