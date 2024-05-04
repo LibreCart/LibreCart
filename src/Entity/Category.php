@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\UrlKeyTrait;
 use App\Repository\CategoryRepository;
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ApiResource]
 class Category extends BaseEntity
 {
     use UrlKeyTrait;

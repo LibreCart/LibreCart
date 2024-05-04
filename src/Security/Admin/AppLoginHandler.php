@@ -19,7 +19,6 @@ class AppLoginHandler implements AuthenticationSuccessHandlerInterface {
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
-        dd('yews');
         return new Response('ok');
     }
 }
