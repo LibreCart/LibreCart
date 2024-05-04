@@ -11,6 +11,12 @@ services:
       - ./:/var/www
       - var_volume:/var/www/var
       - vendor_volume:/var/www/vendor
+  watcher:
+    image: node:latest
+    entrypoint: ./config/docker/watcher/entrypoint.sh
+    volumes:
+      - ./:/app
+      - node_modules_volume:/app/node_modules
   web:
     image: nginx:alpine
     container_name: ${IMAGES_PREFIX:-}librecart-web
@@ -46,4 +52,6 @@ volumes:
   var_volume:
     driver: local
   vendor_volume:
+    driver: local
+  node_modules_volume:
     driver: local
