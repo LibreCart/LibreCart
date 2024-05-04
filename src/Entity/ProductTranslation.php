@@ -3,20 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\UuidTrait;
-use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Traits\TimestampAbleTrait;
 use App\Entity\Traits\TranslateAbleTrait;
 use App\Repository\ProductTranslationRepository;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ProductTranslationRepository::class)]
 #[ORM\UniqueConstraint(columns:['product_id', 'locale'])]
-#[ApiResource()]
-class ProductTranslation
-{
-    use UuidTrait;
+class ProductTranslation extends BaseEntity
+{ 
     use TranslateAbleTrait;
-    use TimestampAbleTrait;
 
     #[ORM\ManyToOne(inversedBy: 'productTranslations')]
     #[ORM\JoinColumn(nullable: false)]

@@ -3,21 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\UuidTrait;
 use App\Entity\Traits\UrlKeyTrait;
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
-use App\Entity\Traits\TimestampAbleTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource()]
-class Product
+class Product extends BaseEntity
 {
-    use UuidTrait;
     use UrlKeyTrait;
-    use TimestampAbleTrait;
 
     #[ORM\Column]
     private ?int $price = null;

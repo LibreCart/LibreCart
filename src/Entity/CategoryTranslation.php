@@ -3,20 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\UuidTrait;
-use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Traits\TimestampAbleTrait;
 use App\Entity\Traits\TranslateAbleTrait;
 use App\Repository\CategoryTranslationRepository;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: CategoryTranslationRepository::class)]
 #[ORM\UniqueConstraint(columns:['category_id', 'locale'])]
-#[ApiResource()]
-class CategoryTranslation
+class CategoryTranslation extends BaseEntity
 {
-    use UuidTrait;
     use TranslateAbleTrait;
-    use TimestampAbleTrait;
 
     #[ORM\ManyToOne(inversedBy: 'categoryTranslations')]
     #[ORM\JoinColumn(nullable: false)]

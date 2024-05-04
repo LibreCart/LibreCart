@@ -5,7 +5,6 @@ namespace App\Entity\Traits;
 use App\Enum\LocaleEnum;
 use Doctrine\ORM\Mapping as ORM;
 
-
 trait TranslateAbleTrait 
 {
     #[ORM\Column(length: 255, nullable: false, type: 'string')]

@@ -2,21 +2,16 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\TimestampAbleTrait;
-use App\Entity\Traits\UuidTrait;
 use App\Enum\UserRoleEnum;
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use UuidTrait;
-    use TimestampAbleTrait;
-
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 

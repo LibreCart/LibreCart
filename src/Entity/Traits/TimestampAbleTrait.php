@@ -3,12 +3,12 @@
 namespace App\Entity\Traits;
 
 use DateTime;
-use Doctrine\ORM as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 trait TimestampAbleTrait 
 {
     #[ORM\Column(nullable: false)]
-    private ?DateTime $createdAt;
+    private ?DateTime $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?DateTime $updatedAt = null;
