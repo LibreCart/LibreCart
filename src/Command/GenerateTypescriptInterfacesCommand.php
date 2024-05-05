@@ -12,8 +12,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand('app:generate:typescript-interfaces')]
 class GenerateTypescriptInterfacesCommand extends Command {
-    
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

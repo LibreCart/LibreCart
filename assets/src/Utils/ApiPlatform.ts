@@ -11,7 +11,9 @@ class ApiPlatform {
 
             const data = await response.json();
 
-            return data;
+           // console.log(data['hydra:member']);
+
+            return data['hydra:member'] ?? data;
         } catch (error) {
             console.error("Error fetching "+ endpoint +":", error);
         }

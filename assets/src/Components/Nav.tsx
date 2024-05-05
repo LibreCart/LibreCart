@@ -1,43 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 
 import ApiPlatform from '../Utils/ApiPlatform';
+import { Category } from "../Interfaces/Category";
 
 function Nav() {
 
     const [categories, setCategories] = useState([]);
 
-    const buildCategoryTree = (flatCategories) => {
+    const buildCategoryTree = (categories: Category[]) => {
+        const categoryMap:any = {};
 
+        categories.forEach((category) => {
+            categoryMap[category.id] = { ...category, children: []}
+        });
+
+        const rootCategories: any = [];
+
+        // Build the tree structure by linking parents and children
+        categories.forEach((category) => {
+            const { id, parentCategory } = category;
+            if (parentCategory) {
+                const parentId = parentCategory.split('/').pop(); // Extract the parent category ID
+                if (categoryMap[parentId]) {
+                    categoryMap[parentId].children.push(categoryMap[id]);
+                }
+            } else {
+                rootCategories.push(categoryMap[id]); // If no parent, it's a root category
+            }
+        });
+        
+        return rootCategories;
     }
 
+    const renderCategory = (category: Category) => (
+        <li key={category.id}>
+            <a href={"/" + category.urlKey}>
+                {category.urlKey}
+            </a>
+
+            {category.children.length > 0 && (
+                <ul className="pl-6 mt-2 border-l border-gray-200">
+                    {category.children.map((child) => renderCategory(child))}
+                </ul>
+            )}
+        </li>
+    );
 
     useEffect(() => {
-        ApiPlatform.get('categories').then((data) => {
-            console.log(data);
+        ApiPlatform.get('categories').then((categories) => {
+            setCategories(buildCategoryTree(categories));
         });
     });
 
     return(
         <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
-                </li>
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
-                </li>
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Marketplace</a>
-                </li>
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Features</a>
-                </li>
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Team</a>
-                </li>
-                <li>
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
-                </li>
+                {categories.map((category) => renderCategory(category))}
             </ul>
         </div>
     );

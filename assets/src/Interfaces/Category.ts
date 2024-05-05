@@ -7,4 +7,5 @@ export interface Category {
     categoryTranslations: any;
     products: any;
     urlKey: string;
+    children: Category[]
 }
