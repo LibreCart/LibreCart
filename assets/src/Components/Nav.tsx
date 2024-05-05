@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+import ApiPlatform from '../Utils/ApiPlatform';
+
 function Nav() {
 
     const [categories, setCategories] = useState([]);
 
+    const buildCategoryTree = (flatCategories) => {
+
+    }
+
+
     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                console.log('call!');
-                const response = await fetch("/api/categories");
-
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-
-                const data = await response.json();
-
-                console.log(data);
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-            }
-        };
-        
-        fetchCategories();
+        ApiPlatform.get('categories').then((data) => {
+            console.log(data);
+        });
     });
 
     return(

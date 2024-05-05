@@ -1,5 +1,7 @@
 {
     "devDependencies": {
+        "@api-platform/api-doc-parser": "^0.16.4",
+        "@api-platform/client-generator": "^0.8.0",
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
         "@babel/preset-react": "^7.24.1",
