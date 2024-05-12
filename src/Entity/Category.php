@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\UrlKeyTrait;
+use App\Entity\Traits\UrlMapAbleTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ApiResource]
 class Category extends BaseEntity
 {
-    use UrlKeyTrait;
+    use UrlMapAbleTrait;
 
     #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
     private ?self $parentCategory = null;

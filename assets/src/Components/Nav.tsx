@@ -47,10 +47,11 @@ function Nav() {
     );
 
     useEffect(() => {
+        console.log('call!');
         ApiPlatform.get('categories').then((categories) => {
             setCategories(buildCategoryTree(categories));
         });
-    });
+    }, []);
 
     return(
         <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">

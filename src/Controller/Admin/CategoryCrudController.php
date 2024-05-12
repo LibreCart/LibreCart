@@ -30,10 +30,10 @@ class CategoryCrudController extends AbstractCrudController
             //ChoiceField::new('parentCategoryId')->setChoices($this->getCategoryChoices()),
             AssociationField::new('parentCategory')
                 ->autocomplete(),
-            AssociationField::new('products')
-                ->autocomplete()
-                ->onlyOnForms()
-                ->setFormTypeOption('by_reference', true),
+           // AssociationField::new('products')
+            //    ->autocomplete()
+           //     ->onlyOnForms()
+          //      ->setFormTypeOption('by_reference', true),
             CollectionField::new('categoryTranslations')
                 ->setEntryType(CategoryTranslationType::class)
                 ->onlyOnForms()

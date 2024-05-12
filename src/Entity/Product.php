@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\UrlKeyTrait;
+use App\Entity\Traits\UrlMapAbleTrait;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product extends BaseEntity
 {
-    use UrlKeyTrait;
+    use UrlMapAbleTrait;
 
     #[ORM\Column]
     private ?int $price = null;

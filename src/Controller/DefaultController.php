@@ -6,9 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class DefaultController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/')]
+    #[Route('/{reactRouting}', name: 'app_default', priority: -1)]
     public function index(): Response
     {
         return $this->render('base.html.twig');
